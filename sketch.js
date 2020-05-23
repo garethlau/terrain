@@ -79,6 +79,14 @@ function setup() {
   soundFormats("mp3");
   createCanvas(windowWidth, windowHeight, WEBGL);
 
+  window.addEventListener("wheel", function (event) {
+    let currVolume = volumeSlider.value();
+    if (event.deltaY < 0) {
+      volumeSlider.value(currVolume + 0.05);
+    } else if (event.deltaY > 0) {
+      volumeSlider.value(currVolume - 0.05);
+    }
+  });
   playBtn = createButton("PLAY");
 
   pauseBtn = createButton("PAUSE");
