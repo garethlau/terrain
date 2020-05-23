@@ -21,6 +21,7 @@ let nextBtn;
 let prevBtn;
 let songTitle;
 let loaderDiv;
+let volumeSlider;
 
 const SMOOTHING = 0.3;
 const ACTIONS_CONTAINER_OFFSET = 130;
@@ -128,6 +129,13 @@ function setup() {
   playBtn.class("control-btn play");
   pauseBtn.class("control-btn pause");
 
+  sliderContainer = createDiv();
+  sliderContainer.id("slider-container");
+
+  volumeSlider = createSlider(0, 1, 0.5, 0.01);
+  volumeSlider.id("volume-slider");
+  sliderContainer.child(volumeSlider);
+
   fft = new p5.FFT(SMOOTHING, BINS);
   clearTerrain();
   drawTerrain();
@@ -152,6 +160,9 @@ function loadDone() {
 function draw() {
   songTitle.html(songs[index].displayName);
   if (currAudio.isPlaying()) {
+    // console.log(currAudio)
+    currAudio.setVolume(volumeSlider.value());
+
     populateTerrain();
     drawTerrain();
   }
@@ -204,7 +215,7 @@ function drawTerrain() {
   for (let y = 0; y < rows - 1; y++) {
     // fill(255, map(y, 0, rows - 1, 0, 255), 0, map(y, 0, rows - 1, 100, 255));
     // fill(255, map(y, 0, rows - 1, 0, 255), 0);
-    
+
     beginShape(TRIANGLE_STRIP);
     for (let x = 0; x < cols; x++) {
       // console.log(terrain[y][x])
