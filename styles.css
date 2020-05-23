@@ -1,12 +1,12 @@
 :root {
-  --action-vertical-offset: -150px;
+  --action-vertical-offset: -250px;
 }
 body {
   margin: 0;
   font-family: "Anton", sans-serif;
 }
 .loader-container {
-  transform: translate(0, -140px);
+  transform: translate(0, -230px);
 }
 .loader {
   width: 40px;
@@ -48,7 +48,7 @@ body {
   color: white;
   font-size: 3.5rem;
   font-weight: 400;
-  transform: translate(0, -280px);
+  transform: translate(0, -380px);
 }
 
 .control-btn {
