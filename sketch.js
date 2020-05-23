@@ -20,7 +20,6 @@ let pauseBtn;
 let nextBtn;
 let prevBtn;
 let songTitle;
-let loaderDiv;
 let volumeSlider;
 
 const SMOOTHING = 0.3;
@@ -73,7 +72,55 @@ function positionUI() {
   prevBtn.center();
   pauseBtn.center();
   songTitle.center();
-  loaderContainer.center();
+}
+
+function keyPressed() {
+  if (keyCode === LEFT_ARROW) {
+    goPrev();
+  } else if (keyCode === RIGHT_ARROW) {
+    goNext();
+  } else if (keyCode === UP_ARROW) {
+    increaseVolume();
+  } else if (keyCode === DOWN_ARROW) {
+    decreaseVolume();
+  } else if (keyCode === 32) {
+    if (currAudio.isPlaying()) {
+      pause();
+    } else {
+      play();
+    }
+  }
+}
+
+function pause() {
+  pauseBtn.hide();
+  playBtn.show();
+  currAudio.pause();
+}
+
+function play() {
+  playBtn.hide();
+  pauseBtn.show();
+  currAudio.play();
+}
+function goNext() {
+  index = (index + 1) % songs.length;
+  changeSong();
+}
+function goPrev() {
+  if (index === 0) index = songs.length - 1;
+  else index -= 1;
+  changeSong();
+}
+
+function increaseVolume() {
+  let currVolume = volumeSlider.value();
+  volumeSlider.value(currVolume + 0.05);
+}
+
+function decreaseVolume() {
+  let currVolume = volumeSlider.value();
+  volumeSlider.value(currVolume - 0.05);
 }
 
 function setup() {
@@ -81,13 +128,13 @@ function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
 
   window.addEventListener("wheel", function (event) {
-    let currVolume = volumeSlider.value();
     if (event.deltaY < 0) {
-      volumeSlider.value(currVolume + 0.05);
+      increaseVolume();
     } else if (event.deltaY > 0) {
-      volumeSlider.value(currVolume - 0.05);
+      decreaseVolume();
     }
   });
+
   playBtn = createButton("PLAY");
 
   pauseBtn = createButton("PAUSE");
@@ -97,42 +144,22 @@ function setup() {
 
   prevBtn = createButton("PREV");
 
-  nextBtn.mousePressed(() => {
-    index = (index + 1) % songs.length;
-    changeSong();
-  });
+  nextBtn.mousePressed(goNext);
 
-  prevBtn.mousePressed(() => {
-    if (index === 0) index = songs.length - 1;
-    else index -= 1;
-    changeSong();
-  });
+  prevBtn.mousePressed(goPrev);
 
-  pauseBtn.mousePressed(() => {
-    pauseBtn.hide();
-    playBtn.show();
-    currAudio.pause();
-  });
+  pauseBtn.mousePressed(pause);
 
-  playBtn.mousePressed(() => {
-    playBtn.hide();
-    pauseBtn.show();
-    currAudio.play();
-  });
+  playBtn.mousePressed(play);
 
   currAudio = loadSound(songs[index].path, () => {
     loadingSong = false;
   });
 
-  loader = createDiv();
-  loaderContainer = createDiv();
-  loaderContainer.child(loader);
-  loaderContainer.class("loader-container");
   songTitle = createP(songs[index].displayName);
   songTitle.class("song-title");
 
   positionUI();
-  loader.addClass("loader");
   prevBtn.class("control-btn prev");
   nextBtn.class("control-btn next");
   playBtn.class("control-btn play");
@@ -178,16 +205,11 @@ function draw() {
 
   positionUI();
   if (loadingSong) {
-    playBtn.hide();
-    pauseBtn.hide();
-    nextBtn.hide();
-    prevBtn.hide();
-    loader.show();
+    playBtn.style("opacity", 0.5);
+    playBtn.attribute("disabled", "");
   } else {
-    playBtn.show();
-    nextBtn.show();
-    prevBtn.show();
-    loader.hide();
+    playBtn.style("opacity", 1);
+    playBtn.removeAttribute("disabled");
   }
 }
 
