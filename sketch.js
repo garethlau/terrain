@@ -4,7 +4,6 @@ let scl = 4;
 let w = 512;
 let h = 512;
 let terrain = [];
-let flying = 0;
 
 let currAudio;
 let index = 0;
@@ -25,7 +24,6 @@ let volumeSlider;
 const SMOOTHING = 0.5;
 const ACTIONS_CONTAINER_OFFSET = 130;
 
-// const BACKGROUND_COLOR = "#00FFE6";
 const BACKGROUND_COLOR = "#42b3f5";
 const BINS = 128;
 
@@ -237,8 +235,6 @@ function clearTerrain() {
 
 function populateTerrain() {
   spectrum = fft.analyze();
-  flying -= 0.1;
-  var yoff = flying;
 
   terrain.shift();
   let lastRow = [];
@@ -257,12 +253,8 @@ function drawTerrain() {
   noStroke();
 
   for (let y = 0; y < rows - 1; y++) {
-    // fill(255, map(y, 0, rows - 1, 0, 255), 0, map(y, 0, rows - 1, 100, 255));
-    // fill(255, map(y, 0, rows - 1, 0, 255), 0);
-
     beginShape(TRIANGLE_STRIP);
     for (let x = 0; x < cols; x++) {
-      // console.log(terrain[y][x])
       fill(255, map(terrain[y][x], 0, rows - 1, 255, 50), 0);
       vertex(x * scl, y * scl, terrain[y][x]);
       vertex(x * scl, (y + 1) * scl, terrain[y + 1][x]);
