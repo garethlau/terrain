@@ -194,16 +194,6 @@ function windowResized() {
   drawTerrain();
 }
 
-function loadProgress() {
-  console.log("Loading");
-}
-function loadError() {
-  console.log("error");
-}
-function loadDone() {
-  console.log("Done loading");
-}
-
 function draw() {
   songTitle.html(songs[index].displayName);
   if (currAudio.isPlaying()) {
