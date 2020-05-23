@@ -68,6 +68,10 @@ const songs = [
     displayName: "Knots - Filous",
     path: "songs/Filous - Knots (feat. klei).mp3",
   },
+  {
+    displayName: "Kill This Love - BLACKPINK",
+    path: "songs/BLACKPINK - 'Kill This Love' MV.mp3",
+  },
 ];
 
 function changeSong() {
