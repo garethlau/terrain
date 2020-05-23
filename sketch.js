@@ -84,6 +84,7 @@ function keyPressed() {
   } else if (keyCode === DOWN_ARROW) {
     decreaseVolume();
   } else if (keyCode === 32) {
+    if (!currAudio.isLoaded()) return;
     if (currAudio.isPlaying()) {
       pause();
     } else {
