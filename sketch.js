@@ -41,6 +41,10 @@ const songs = [
     path: "songs/clairedelune.mp3",
   },
   {
+    displayName: "New Dior - DigDat x D-Block Europe",
+    path: "songs/DigDat x D-Block Europe - New Dior (lyric video).mp3",
+  },
+  {
     displayName: "Alone - Alan Walker",
     path: "songs/Alan Walker - Alone.mp3",
   },
@@ -51,6 +55,14 @@ const songs = [
   {
     displayName: "Free - Kidswaste",
     path: "songs/Kidswaste - Free.mp3",
+  },
+  {
+    displayName: "ADDYS (feat. Nechie) - Gunna",
+    path: "songs/Gunna - ADDYS (feat. Nechie) [Official Audio].mp3",
+  },
+  {
+    displayName: "Meh - Playboi Carti",
+    path: "songs/Playboi Carti - Meh (Lyrics).mp3",
   },
   {
     displayName: "Knots - Filous",
