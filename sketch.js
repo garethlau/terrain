@@ -22,7 +22,7 @@ let prevBtn;
 let songTitle;
 let volumeSlider;
 
-const SMOOTHING = 0.3;
+const SMOOTHING = 0.5;
 const ACTIONS_CONTAINER_OFFSET = 130;
 
 // const BACKGROUND_COLOR = "#00FFE6";
