@@ -21,7 +21,6 @@ let nextBtn;
 let prevBtn;
 let songTitle;
 let loaderDiv;
-let controlsContainer;
 
 const SMOOTHING = 0.6;
 const ACTIONS_CONTAINER_OFFSET = 130;
@@ -64,38 +63,29 @@ function changeSong() {
   }, 100);
 }
 
-function preload() {
-  soundFormats("mp3");
+function positionUI() {
+  cols = w / scl;
+  rows = h / scl;
+  playBtn.center();
+  nextBtn.center();
+  prevBtn.center();
+  pauseBtn.center();
+  songTitle.center();
+  loaderContainer.center();
 }
 
 function setup() {
+  soundFormats("mp3");
   createCanvas(windowWidth, windowHeight, WEBGL);
-  background(BACKGROUND_COLOR);
-  cols = w / scl;
-  rows = h / scl;
 
   playBtn = createButton("PLAY");
-  playBtn.class("control-btn play");
-  playBtn.position(width / 2, height / 5 + ACTIONS_CONTAINER_OFFSET);
-  playBtn.style("transform", "translate(-50%, -50%)");
 
   pauseBtn = createButton("PAUSE");
-  pauseBtn.position(width / 2, height / 5 + ACTIONS_CONTAINER_OFFSET);
-  pauseBtn.style("transform", "translate(-50%, -50%)");
-
-  pauseBtn.class("control-btn pause");
   pauseBtn.hide();
 
   nextBtn = createButton("NEXT");
-  nextBtn.class("control-btn next");
-
-  nextBtn.position(width / 2 + 160, height / 5 + ACTIONS_CONTAINER_OFFSET);
-  nextBtn.style("transform", "translate(-50%, -50%)");
 
   prevBtn = createButton("PREV");
-  prevBtn.class("control-btn prev");
-  prevBtn.position(width / 2 - 160, height / 5 + ACTIONS_CONTAINER_OFFSET);
-  prevBtn.style("transform", "translate(-50%, -50%)");
 
   nextBtn.mousePressed(() => {
     index = (index + 1) % songs.length;
@@ -124,29 +114,28 @@ function setup() {
     loadingSong = false;
   });
 
-  loaderContainer = createDiv();
-  loaderContainer.position(width / 2, height / 5 + ACTIONS_CONTAINER_OFFSET);
-  loaderContainer.style("transform", "translate(-50%, -50%)");
-  loaderContainer.style("width", "41px");
-  loaderContainer.style("height", "41px");
-  loaderContainer.style("background-color", BACKGROUND_COLOR);
   loader = createDiv();
-  loader.addClass("loader");
+  loaderContainer = createDiv();
   loaderContainer.child(loader);
-
+  loaderContainer.class("loader-container");
   songTitle = createP(songs[index].displayName);
-  songTitle.position(width / 2, height / 5);
-  songTitle.style("transform", "translate(-50%, -50%)");
   songTitle.class("song-title");
 
-  controlsContainer = createDiv();
-  controlsContainer.child(playBtn);
-  controlsContainer.child(pauseBtn);
-  controlsContainer.child(nextBtn);
-  controlsContainer.child(prevBtn);
+  positionUI();
+  loader.addClass("loader");
+  prevBtn.class("control-btn prev");
+  nextBtn.class("control-btn next");
+  playBtn.class("control-btn play");
+  pauseBtn.class("control-btn pause");
 
   fft = new p5.FFT(SMOOTHING, BINS);
   clearTerrain();
+  drawTerrain();
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+  positionUI();
   drawTerrain();
 }
 
@@ -167,12 +156,18 @@ function draw() {
     drawTerrain();
   }
 
+  positionUI();
   if (loadingSong) {
-    controlsContainer.hide();
-    loaderContainer.show();
+    playBtn.hide();
+    pauseBtn.hide();
+    nextBtn.hide();
+    prevBtn.hide();
+    loader.show();
   } else {
-    controlsContainer.show();
-    loaderContainer.hide();
+    playBtn.show();
+    nextBtn.show();
+    prevBtn.show();
+    loader.hide();
   }
 }
 
@@ -187,14 +182,13 @@ function clearTerrain() {
 
 function populateTerrain() {
   spectrum = fft.analyze();
-  console.log(spectrum.length);
   flying -= 0.1;
   var yoff = flying;
 
   terrain.shift();
   let lastRow = [];
   for (let i = 0; i < cols; i++) {
-    lastRow[i] = map(spectrum[i], 0, 255, 0, 100);
+    lastRow[cols - 1 - i] = map(spectrum[i], 0, 255, 0, 100);
   }
   terrain.push(lastRow);
 }
@@ -203,14 +197,13 @@ function drawTerrain() {
   background(BACKGROUND_COLOR);
   translate(0, 50);
   rotateX(PI / 3);
-  rotateZ(PI / 4);
+  rotateZ(PI + PI / 4);
   translate(-w / 2, -h / 2);
   noStroke();
 
   for (let y = 0; y < rows - 1; y++) {
     // fill(255, map(y, 0, rows - 1, 0, 255), 0, map(y, 0, rows - 1, 100, 255));
     fill(255, map(y, 0, rows - 1, 0, 255), 0);
-    // normalMaterial();
     beginShape(TRIANGLE_STRIP);
     for (let x = 0; x < cols; x++) {
       vertex(x * scl, y * scl, terrain[y][x]);
