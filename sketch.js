@@ -46,6 +46,18 @@ const songs = [
     displayName: "Alone - Alan Walker",
     path: "songs/Alan Walker - Alone.mp3",
   },
+  {
+    displayName: "SICKO MODE ft. Drake - Travis Scott",
+    path: "songs/Travis Scott - SICKO MODE ft. Drake (Official Video).mp3",
+  },
+  {
+    displayName: "Free - Kidswaste",
+    path: "songs/Kidswaste - Free.mp3",
+  },
+  {
+    displayName: "Knots - Filous",
+    path: "songs/Filous - Knots (feat. klei).mp3",
+  },
 ];
 
 function changeSong() {
