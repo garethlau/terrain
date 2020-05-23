@@ -1,8 +1,8 @@
 let rows;
 let cols;
-let scl = 2;
-let w = 256;
-let h = 256;
+let scl = 4;
+let w = 512;
+let h = 512;
 let terrain = [];
 let flying = 0;
 
@@ -22,7 +22,7 @@ let prevBtn;
 let songTitle;
 let loaderDiv;
 
-const SMOOTHING = 0.6;
+const SMOOTHING = 0.3;
 const ACTIONS_CONTAINER_OFFSET = 130;
 
 const BACKGROUND_COLOR = "#00FFE6";
@@ -175,7 +175,7 @@ function clearTerrain() {
   for (var x = 0; x < cols; x++) {
     terrain[x] = [];
     for (var y = 0; y < rows; y++) {
-      terrain[x][y] = null; //specify a default value for now
+      terrain[x][y] = 0; //specify a default value for now
     }
   }
 }
@@ -195,7 +195,7 @@ function populateTerrain() {
 
 function drawTerrain() {
   background(BACKGROUND_COLOR);
-  translate(0, 50);
+  translate(0, 100);
   rotateX(PI / 3);
   rotateZ(PI + PI / 4);
   translate(-w / 2, -h / 2);
@@ -203,9 +203,12 @@ function drawTerrain() {
 
   for (let y = 0; y < rows - 1; y++) {
     // fill(255, map(y, 0, rows - 1, 0, 255), 0, map(y, 0, rows - 1, 100, 255));
-    fill(255, map(y, 0, rows - 1, 0, 255), 0);
+    // fill(255, map(y, 0, rows - 1, 0, 255), 0);
+    
     beginShape(TRIANGLE_STRIP);
     for (let x = 0; x < cols; x++) {
+      // console.log(terrain[y][x])
+      fill(255, map(terrain[y][x], 0, rows - 1, 255, 50), 0);
       vertex(x * scl, y * scl, terrain[y][x]);
       vertex(x * scl, (y + 1) * scl, terrain[y + 1][x]);
     }
