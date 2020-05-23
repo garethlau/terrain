@@ -26,7 +26,8 @@ let volumeSlider;
 const SMOOTHING = 0.3;
 const ACTIONS_CONTAINER_OFFSET = 130;
 
-const BACKGROUND_COLOR = "#00FFE6";
+// const BACKGROUND_COLOR = "#00FFE6";
+const BACKGROUND_COLOR = "#42b3f5";
 const BINS = 128;
 
 const songs = [
